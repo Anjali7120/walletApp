@@ -3,13 +3,16 @@ import RequestValidator from '../../commonUtils/requestValidator';
 
 export default async (req, _, next) => {
   const itemsToValidate = {
-    id: req.body.id,
-    is_active: req.body.is_active,
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+   
   };
 
   const rulesForValidation = {
-    id: Joi.number().required(),
-    is_active: Joi.number().required(),
+    name: Joi.string().required(),
+    email: Joi.string().required(),
+    phone: Joi.string().required(),
   };
 
   return RequestValidator(itemsToValidate, rulesForValidation)
