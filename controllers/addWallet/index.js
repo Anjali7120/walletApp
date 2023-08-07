@@ -1,5 +1,6 @@
-import models from "../../models"; 
-const {WalletModel} = models;
+import db from "../../models"; 
+const WalletModel = db.wallet;
+// const Op = db.Sequelize.Op;
 
 export default async (req, res) => {
     const wallet = {

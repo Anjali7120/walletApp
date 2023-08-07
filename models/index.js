@@ -1,17 +1,43 @@
-import Wallet from './wallet';
-import WalletTransaction from './walletTransaction';
-import WalletUser from './walletUser';
+import dbConfig from "../config/db.config";
 
-const models = (sequelize) => {
-  
-  const WalletModel = Wallet(sequelize);
-  const WalletTransactionModel =WalletTransaction(sequelize);
-  const WalletUserModel = WalletUser(sequelize);
- 
-  return {    
-    WalletUserModel,
-    WalletTransactionModel,
-    WalletModel
-  };
-};
-export default models;
+import Sequelize from "sequelize";
+const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  operatorsAliases: false,
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle,
+  },
+});
+
+const db = {};
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+import wallet from './wallet';
+import walletUser from './walletUser';
+import walletTransaction from './walletTransaction';
+
+
+db.wallet = wallet(sequelize, Sequelize);
+db.walletUser = walletUser(sequelize, Sequelize);
+db.walletTransaction = walletTransaction(sequelize, Sequelize);
+//defining models end
+
+//add relations start
+db.walletTransaction.belongsTo(db.wallet, {
+  foreignKey: "wallet_id",
+  as: "wallet",
+});
+
+db.wallet.belongsTo(db.walletUser, {
+  foreignKey: "wallet_user_id",
+  as: "walletUser",
+});
+//add relations end
+
+export default db;

@@ -1,5 +1,5 @@
-import models from "../../models"; 
-const {WalletTransactionModel} = models;
+import db from "../../models"; 
+const WalletTransactionModel = db.walletTransaction;
 
 export default async (req, res) => {
     

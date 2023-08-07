@@ -1,5 +1,5 @@
-import models from "../../models"; 
-const {WalletUserModel} = models;
+import db from "../../models"; 
+const WalletUserModel = db.walletUser;
 
 export default async (req, res) => {
     
@@ -9,7 +9,6 @@ export default async (req, res) => {
         phone: req.body.phone,
         
     };
-
     WalletUserModel.create(walletUser)
         .then(data => {
             res.send(data);

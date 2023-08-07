@@ -1,6 +1,4 @@
-import Sequelize from 'sequelize';
-
-const WalletUser = (sequelize) =>
+const WalletUser = (sequelize,Sequelize) =>
 sequelize.define(
     'wallet_user',
     {

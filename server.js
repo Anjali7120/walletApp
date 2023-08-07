@@ -1,24 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+import routes from './routes';
 const app = express();
-import models from "./models";
-import dbConfig from "./config/db.config";
-import Sequelize from "sequelize";
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  operatorsAliases: false,
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-  },
-});
 
-models(sequelize);
-sequelize.sync();
+import db from "./models";
+db.sequelize.sync();
 
 var corsOptions = {
   origin: "*",
@@ -41,9 +28,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Wallet." });
 });
 
-// require("./routes/wallet")(app);
-import routes from './routes'
-app.use('/node', routes);
+app.use('/wallet', routes);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
