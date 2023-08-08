@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export default async (req, _, next) => {
+export default async (req, res, next) => {
   const itemsToValidate = {
     wallet_id: req.body.wallet_id,
     amount: req.body.amount,

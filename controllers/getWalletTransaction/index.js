@@ -13,9 +13,11 @@ export default async (req, res) => {
         ...req.query.remarks && { remarks:req.query.remarks},
         ...req.query.amount && {amount:req.query.amount},
     };
-
+const sortBy = req.query.sort ? req.query.sort+ ' DESC': 'id ASC'
     await WalletTransactionModel.findAll(
-        { where: walletTransaction }
+        { where: walletTransaction,
+            order: db.sequelize.literal(sortBy)
+        }
       )
 
       .then((x)=>JSON.parse(JSON.stringify(x)))

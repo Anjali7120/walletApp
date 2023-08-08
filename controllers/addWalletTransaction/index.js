@@ -28,11 +28,14 @@ export default async (req, res) => {
     });
 
     console.log(walletDetail)
+
     if(type==1 && walletDetail.balance < req.body.amount )
     {
         res.status(500).send({
             message: "Wallet does not have sufficient balance."
         });
+        process.exit(0);
+       
     }
     const finalAmount = type==1 ?Number(walletDetail.balance) - amount : Number(walletDetail.balance)+ amount 
 
