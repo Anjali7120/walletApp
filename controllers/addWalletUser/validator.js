@@ -1,7 +1,6 @@
 import Joi from 'joi';
-import RequestValidator from '../../commonUtils/requestValidator';
 
-export default async (req, _, next) => {
+export default async (req, res, next) => {
   const itemsToValidate = {
     name: req.body.name,
     email: req.body.email,
@@ -15,7 +14,16 @@ export default async (req, _, next) => {
     phone: Joi.string().required(),
   };
 
-  return RequestValidator(itemsToValidate, rulesForValidation)
-    .then((__) => next())
-    .catch(next);
+  const tranformToErrorsArray = errorsObj => errorsObj.details.map(error => error.message);
+  const options = { abortEarly: false };
+  const validationsResult = Joi.validate(itemsToValidate, rulesForValidation, options);
+  if(validationsResult.error === null)
+  {
+    next();
+  }
+  else{
+      res.status(403).send({
+        error: tranformToErrorsArray
+    });
+  }
 };

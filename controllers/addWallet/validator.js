@@ -1,5 +1,4 @@
 import Joi from 'joi';
-import RequestValidator from '../../commonUtils/requestValidator';
 
 export default async (req, _, next) => {
   const itemsToValidate = {
@@ -13,7 +12,18 @@ export default async (req, _, next) => {
     balance: Joi.number().precision(4).required(),
   };
 
-  return RequestValidator(itemsToValidate, rulesForValidation)
-    .then((__) => next())
-    .catch(next);
+  
+  const tranformToErrorsArray = errorsObj => errorsObj.details.map(error => error.message);
+  const options = { abortEarly: false };
+  const validationsResult = Joi.validate(itemsToValidate, rulesForValidation, options);
+  if(validationsResult.error === null)
+  {
+    next();
+  }
+  else{
+      res.status(403).send({
+        error: tranformToErrorsArray
+    });
+  }
+
 };

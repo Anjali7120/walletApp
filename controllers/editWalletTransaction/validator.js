@@ -2,6 +2,7 @@ import Joi from 'joi';
 
 export default async (req, _, next) => {
   const itemsToValidate = {
+    id: req.query.id,
     wallet_id: req.body.wallet_id,
     amount: req.body.amount,
     type: req.body.type,
@@ -11,9 +12,10 @@ export default async (req, _, next) => {
   };
 
   const rulesForValidation = {
-    wallet_id: Joi.number().required(),
-    amount: Joi.number().precision(4).required(),
-    type: Joi.number().required(),
+    id: Joi.number().required(),
+    wallet_id: Joi.number(),
+    amount: Joi.number().precision(4),
+    type: Joi.number(),
     status: Joi.number(),
     remarks: Joi.string(),
   };

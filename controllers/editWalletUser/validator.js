@@ -1,27 +1,27 @@
 import Joi from 'joi';
 
-export default async (req, _, next) => {
+export default async (req, res, next) => {
   const itemsToValidate = {
-    wallet_id: req.body.wallet_id,
-    amount: req.body.amount,
-    type: req.body.type,
-    status: req.body.status,
-    remarks: req.body.remarks
-    
+    id: req.query.id,
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
+   
   };
 
   const rulesForValidation = {
-    wallet_id: Joi.number().required(),
-    amount: Joi.number().precision(4).required(),
-    type: Joi.number().required(),
-    status: Joi.number(),
-    remarks: Joi.string(),
+    id: Joi.number().required(),
+    name: Joi.string(),
+    email: Joi.string(),
+    phone: Joi.string(),
   };
 
-  
   const tranformToErrorsArray = errorsObj => errorsObj.details.map(error => error.message);
   const options = { abortEarly: false };
   const validationsResult = Joi.validate(itemsToValidate, rulesForValidation, options);
+
+  console.log(validationsResult.error);
+
   if(validationsResult.error === null)
   {
     next();
@@ -31,5 +31,4 @@ export default async (req, _, next) => {
         error: tranformToErrorsArray
     });
   }
-
 };
