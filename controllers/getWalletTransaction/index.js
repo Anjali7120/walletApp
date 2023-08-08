@@ -1,4 +1,5 @@
 import db from "../../models"; 
+import moment from "moment";
 const WalletTransactionModel = db.walletTransaction;
 
 export default async (req, res) => {
@@ -16,12 +17,21 @@ export default async (req, res) => {
     await WalletTransactionModel.findAll(
         { where: walletTransaction }
       )
+
+      .then((x)=>JSON.parse(JSON.stringify(x)))
     .then(data => {
-            if(data.length>0)
-            data.map((x)=>{
-                x={...x,type : x.type ==1 ? 'debit':'credit'}
+        
+            const result=data.map((x)=>{
+
+                x={
+                    ...x,
+                    createdAt:  moment(x.createdAt).format('YYYY-MM-DD HH:mm:ss'),
+                    updatedAt:  moment(x.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
+                    
+                }
+                return x;
             })
-            res.send(data);
+            res.send(result);
         })
         .catch(err => {
             res.status(500).send({

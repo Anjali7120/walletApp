@@ -43,12 +43,6 @@ db.wallet.belongsTo(db.walletUser, {
   as: "wallet_user",
 });
 
-// db.walletUser.hasMany(db.wallet, {
-//   foreignKey: "wallet_id",
-//   as: "wallet_user",
-// });
-
-
 //add relations end
 
 export default db;
