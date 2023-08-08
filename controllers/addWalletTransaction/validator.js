@@ -5,7 +5,6 @@ export default async (req, _, next) => {
     wallet_id: req.body.wallet_id,
     amount: req.body.amount,
     type: req.body.type,
-    status: req.body.status,
     remarks: req.body.remarks
     
   };
@@ -14,7 +13,6 @@ export default async (req, _, next) => {
     wallet_id: Joi.number().required(),
     amount: Joi.number().precision(4).required(),
     type: Joi.number().required(),
-    status: Joi.number(),
     remarks: Joi.string(),
   };
 
@@ -28,7 +26,7 @@ export default async (req, _, next) => {
   }
   else{
       res.status(403).send({
-        error: tranformToErrorsArray
+        error: tranformToErrorsArray(validationsResult.error)
     });
   }
 

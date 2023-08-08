@@ -6,7 +6,6 @@ export default async (req, res) => {
     const walletTransaction = {
         ...req.body.wallet_id && { wallet_id: req.body.wallet_id},
         ...req.body.type && {type: req.body.type},
-        ...req.body.status && {status:req.body.status},
         ...req.body.remarks && { remarks:req.body.remarks},
         ...req.body.amount && {amount:req.body.amount},
     };

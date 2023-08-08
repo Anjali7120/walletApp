@@ -19,10 +19,11 @@ return sequelize.define(
         type: Sequelize.STRING,
       },
   
-      status:  {
-        type: Sequelize.ENUM,
-        values: ['successfull', 'rejected'],
-        defaultValue: 'successfull',
+      balance:  {
+        type: Sequelize.DECIMAL(10,4),
+      },
+      transaction_id:  {
+        type: Sequelize.STRING,
       },
   
       type: {

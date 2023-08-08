@@ -11,6 +11,10 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     acquire: dbConfig.pool.acquire,
     idle: dbConfig.pool.idle,
   },
+  define: {
+    //prevent sequelize from pluralizing table names
+    freezeTableName: true
+}
 });
 
 const db = {};
@@ -31,13 +35,20 @@ db.walletTransaction = walletTransaction(sequelize, Sequelize);
 //add relations start
 db.walletTransaction.belongsTo(db.wallet, {
   foreignKey: "wallet_id",
-  as: "wallet",
+  as: "wallets",
 });
 
 db.wallet.belongsTo(db.walletUser, {
   foreignKey: "wallet_user_id",
-  as: "walletUser",
+  as: "wallet_user",
 });
+
+// db.walletUser.hasMany(db.wallet, {
+//   foreignKey: "wallet_id",
+//   as: "wallet_user",
+// });
+
+
 //add relations end
 
 export default db;

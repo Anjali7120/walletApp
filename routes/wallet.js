@@ -12,23 +12,26 @@ import editWalletUserValidator from "../controllers/editWalletUser/validator";
 import editWalletTransaction from "../controllers/editWalletTransaction/index";
 import editWalletTransactionValidator from "../controllers/editWalletTransaction/validator";
 
-import listWallet from "../controllers/listWallet/index";
-import listWalletUser from "../controllers/listWalletUser/index";
-import listWalletTransaction from "../controllers/listWalletTransaction/index";
+import getWallet from "../controllers/getWallet/index";
+import getWalletValidator from "../controllers/getWallet/validator";
+import getWalletUser from "../controllers/getWalletUser/index";
+import getWalletUserValidator from "../controllers/getWalletUser/validator";
+import getWalletTransaction from "../controllers/getWalletTransaction/index";
+import getWalletTransactionValidator from "../controllers/getWalletTransaction/validator";
+
 
 export default router => {
     router.post("/add-wallet", addWalletValidator, addWallet);
     router.post("/add-wallet-user", addWalletUserValidator, addWalletUser);
     router.post("/add-wallet-transaction", addWalletTransactionValidator,addWalletTransaction);
 
+    router.put("/edit-wallet", editWalletValidator, editWallet);
+    router.put("/edit-wallet-user", editWalletUserValidator, editWalletUser);
+    router.put("/edit-wallet-transaction", editWalletTransactionValidator,editWalletTransaction);
 
-    router.post("/edit-wallet", editWalletValidator, editWallet);
-    router.post("/edit-wallet-user", editWalletUserValidator, editWalletUser);
-    router.post("/edit-wallet-transaction", editWalletTransactionValidator,editWalletTransaction);
-
-    router.get("/list-wallet", listWallet);
-    router.get("/list-wallet-user", listWalletUser);
-    router.get("/list-wallet-transaction", listWalletTransaction);
+    router.get("/get-wallet", getWalletValidator, getWallet);
+    router.get("/get-wallet-user", getWalletUserValidator, getWalletUser);
+    router.get("/get-wallet-transaction", getWalletTransactionValidator,getWalletTransaction);
 
 
 
