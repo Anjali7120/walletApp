@@ -1,4 +1,15 @@
+This is the Backend of wallet app written in nodejs and mysql.
+# commands to run the application
+1.) yarn install
+2.) yarn start
+to run this project first you need to setup your local database and change the host, password, database name in .env file.
 
+#about the app
+I have create a separate table to store user information so that if in future i need to implement authentication this will be easy.
+wallet is bind to wallet_user table 
+every wallet_user can create only one wallet. 
+
+# tables created in this app
 CREATE TABLE `wallet_user`(
  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -31,6 +42,5 @@ CREATE TABLE `wallet_transaction`(
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-   FOREIGN KEY (`wallet_id`) REFERENCES `wallet`(`id`)
-  
+   FOREIGN KEY (`wallet_id`) REFERENCES `wallet`(`id`)  
 )
