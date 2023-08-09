@@ -20,8 +20,6 @@ export default async (req, res, next) => {
   const options = { abortEarly: false };
   const validationsResult = Joi.validate(itemsToValidate, rulesForValidation, options);
 
-  console.log(validationsResult.error);
-
   if(validationsResult.error === null)
   {
     next();

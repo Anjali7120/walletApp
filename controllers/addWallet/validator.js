@@ -1,7 +1,6 @@
 import Joi from 'joi';
 
 export default async (req, res, next) => {
-console.log("ffkkkkkk");
   const itemsToValidate = {
     wallet_user_id: req.body.wallet_user_id,
     balance: req.body.balance
@@ -18,7 +17,6 @@ console.log("ffkkkkkk");
   const options = { abortEarly: false };
   const validationsResult = Joi.validate(itemsToValidate, rulesForValidation, options);
  
-  console.log(validationsResult.error);
   if(validationsResult.error === null)
   {
     next();
