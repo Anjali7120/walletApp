@@ -26,7 +26,7 @@ console.log("ffkkkkkk");
 
   else{
       res.status(403).send({
-        error: tranformToErrorsArray(validationsResult.error)
+        message: tranformToErrorsArray(validationsResult.error)[0]
     });
   }
 

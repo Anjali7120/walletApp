@@ -24,7 +24,7 @@ export default async (req, _, next) => {
   }
   else{
       res.status(403).send({
-        error: tranformToErrorsArray(validationsResult.error)
+        message: tranformToErrorsArray(validationsResult.error)[0]
     });
   }
 

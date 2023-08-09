@@ -3,7 +3,7 @@ const WalletTransactionModel = db.walletTransaction;
 const WalletModel = db.wallet;
 
 export default async (req, res) => {
-    
+    try{
     const type=req.body.type;
     const typeMsg= type==1?'debit':'credit'
     const amount=req.body.amount;
@@ -15,7 +15,6 @@ export default async (req, res) => {
             res.status(404).send({
                 message: "wallet not found"
             });
-            process.exit(0);
         }
         else
         return  data[0].dataValues;
@@ -32,11 +31,10 @@ export default async (req, res) => {
         res.status(500).send({
             message: "Wallet does not have sufficient balance."
         });
-        process.exit(0);
        
     }
+    else{
     const finalAmount = type==1 ?Number(walletDetail.balance) - amount : Number(walletDetail.balance)+ amount 
-
     const walletTransaction = {
         wallet_id: walletDetail.id,
         type: type,
@@ -46,31 +44,31 @@ export default async (req, res) => {
         balance:finalAmount
     };
 
-    console.log(walletTransaction);
-    await WalletModel.update({balance:finalAmount},{where:{id : walletDetail.id}})
-    .then(()=>{console.log("wallet updated");})
-        .then(() => {
-           console.log("hiii");
-            WalletTransactionModel.create(walletTransaction)
-            .then(data => {
-                res.send(data);
-            })
-            .catch(
-                err => {
-                    res.status(500).send({
-                        message:
-                            err.message || "Some error occurred in wallet Transaction."
-                    });
-                }
-            )
+    const t = await db.sequelize.transaction();
 
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred in wallet."
-            });
+    try {
+        await WalletModel.update({balance:finalAmount},{where:{id : walletDetail.id}},{ transaction: t })
+        .then(()=>{console.log("wallet updated");})
+        await WalletTransactionModel.create({},{ transaction: t })
+        .then(()=>{console.log("wallet transaction updated");});
+        // If the execution reaches this line, no errors were thrown.
+        // We commit the transaction.
+        await t.commit();
+      
+      } catch (error) {
+        // If the execution reaches this line, an error was thrown.
+        // We rollback the transaction.
+        await t.rollback();
+        res.status(500).send({
+            message: error.errors[0].message || "Some Error Occur while updating the transaction"
         });
-  
-   
+      
+      }
+      
+    }
+    }catch (err) {
+        res.status(500).send({
+          message: err.message || "Some error occurred",
+        });
+      }
 };
