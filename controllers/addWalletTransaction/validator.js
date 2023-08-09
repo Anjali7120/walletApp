@@ -11,7 +11,7 @@ export default async (req, res, next) => {
 
   const rulesForValidation = {
     wallet_id: Joi.number().required(),
-    amount: Joi.number().precision(4).required(),
+    amount: Joi.number().precision(4).positive().greater(0).required(),
     type: Joi.number().required(),
     remarks: Joi.string(),
   };

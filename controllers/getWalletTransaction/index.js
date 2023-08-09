@@ -27,6 +27,7 @@ const sortBy = req.query.sort ? req.query.sort+ ' DESC': 'id ASC'
 
                 x={
                     ...x,
+                    amount: x.type=='debit' ? '-'+x.amount : '+'+x.amount ,
                     createdAt:  moment(x.createdAt).format('YYYY-MM-DD HH:mm:ss'),
                     updatedAt:  moment(x.updatedAt).format('YYYY-MM-DD HH:mm:ss'),
                     

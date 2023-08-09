@@ -47,14 +47,16 @@ export default async (req, res) => {
     const t = await db.sequelize.transaction();
 
     try {
+        var result;
         await WalletModel.update({balance:finalAmount},{where:{id : walletDetail.id}},{ transaction: t })
         .then(()=>{console.log("wallet updated");})
-        await WalletTransactionModel.create({},{ transaction: t })
-        .then(()=>{console.log("wallet transaction updated");});
+        await WalletTransactionModel.create(walletTransaction,{ transaction: t })
+        .then((x)=>JSON.parse(JSON.stringify(x)))
+        .then((data)=>result=data)
         // If the execution reaches this line, no errors were thrown.
         // We commit the transaction.
         await t.commit();
-      
+        res.send(result);
       } catch (error) {
         // If the execution reaches this line, an error was thrown.
         // We rollback the transaction.

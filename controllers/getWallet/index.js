@@ -18,7 +18,17 @@ export default async (req, res) => {
             }],
             where: wallet }
       )
+      .then((x)=>JSON.parse(JSON.stringify(x)))
         .then(data => {
+        data=data.map((x)=>{
+            x={
+                ...x,
+                wallet_user_name:x.wallet_user.name,
+                wallet_user_phone:x.wallet_user.phone,
+                wallet_user_email:x.wallet_user.email,
+            }
+            return x;
+        })
             res.send(data);
         })
         .catch(err => {
